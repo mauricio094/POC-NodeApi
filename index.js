@@ -11,7 +11,7 @@ const Pack = require('./package');
 
 
 const server = hapi.server({
-	port: 4000,
+	port: 4003,
 	host: 'localhost'
 });
 
@@ -69,7 +69,7 @@ const init = async () => {
 			method: 'GET',
 			path: '/api/v1/paintings',
 			config: {
-				description: "Get a specific painting by Id.",
+				description: "Get all paintings.",
 				tags: ['api', 'v1', 'paintings']
 			},
 			handler: (req, reply) => {
@@ -77,11 +77,22 @@ const init = async () => {
 			}
 		},
 		{
+			method: 'GET',
+			path: '/api/v1/paintings/{id}',
+			config: {
+				description: "Get a specific painting by Id.",
+				tags: ['api', 'v1', 'paintings']
+			},
+			handler: (req, reply) => {
+				return Painting.findById(req.params.id);
+			}
+		},
+		{
 			method: 'POST',
 			path: '/api/v1/paintings',
 			config: {
 				description: "Add a new painting.",
-				tags: ['api', 'v1', 'paintings']
+				tags: ['api', 'v1', 'paintings'],
 			},
 			handler: (req, reply) => {
 				const { name, url, techniques } = req.payload;
